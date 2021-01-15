@@ -7,6 +7,9 @@ import graphics.math.Vector;
 
 public class Renderer
 {
+	public boolean clearColorBuffer;
+	public boolean clearDepthBuffer;
+
 	public Renderer()
 	{
 		// support depth testing
@@ -18,6 +21,9 @@ public class Renderer
 
 		// required for antialiasing
 		glEnable( GL_MULTISAMPLE );
+
+		clearColorBuffer = true;
+		clearDepthBuffer = true;
 	}
 
 	public void setClearColor( Vector color )
@@ -26,10 +32,14 @@ public class Renderer
 			(float)color.values[0], (float)color.values[1], (float)color.values[2], 1);
 	}
 
+	
 	public void render(Scene scene, Camera camera)
 	{
-		// clear color and depth buffers
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// clear color and/or depth buffers
+		if (clearColorBuffer)
+			glClear(GL_COLOR_BUFFER_BIT);
+		if (clearDepthBuffer)
+			glClear(GL_DEPTH_BUFFER_BIT);
 
 		// update camera view (calculate inverse)
 		camera.updateViewMatrix();
